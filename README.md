@@ -157,7 +157,7 @@ OTEL_COLLECTOR_URL="collector:4317"
 ```sh
 make up
 ```
-Ou 
+Caso não tenha o make:
 ```sh
 docker-compose up -d --build
 ```
@@ -219,16 +219,16 @@ make test
 ## 📝 Evidências
 
 ### Traces no Zipkin
-![Zipkin Traces](./docs/zipkin.png)
+![Zipkin](./docs/zipkin.png)
 *Visualização dos traces distribuídos entre os serviços de input e orchestrator*
 
 ### Requisição POST via serviço Input
-![API Request](./docs/input_post.png)
+![API Input](./docs/input_post.png)
 *Exemplo de requisição bem-sucedida para consulta de temperatura por CEP*
 
 
 ### Requisição GET via serviço Orchestrator
-![API Request](./docs/orchestrator_get.png)
+![API Orchestrator](./docs/orchestrator_get.png)
 *Exemplo de requisição bem-sucedida para consulta de temperatura por CEP*
 
 ---
