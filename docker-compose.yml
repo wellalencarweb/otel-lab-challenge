@@ -1,0 +1,66 @@
+services:
+  api_input:
+    env_file:
+      - path: ./.env.docker
+        required: true
+    image: wellalencarweb/goexpert-lab-otel-challenge-input
+    build:
+      context: .
+      dockerfile: Dockerfile.input
+    ports:
+      - "${INPUT_SERVICE_WEB_SERVER_PORT}:${INPUT_SERVICE_WEB_SERVER_PORT}"
+    depends_on:
+      - collector
+    networks:
+      - otel-net
+
+  api_orchestrator:
+    env_file:
+      - path: ./.env.docker
+        required: true
+    image: wellalencarweb/goexpert-lab-otel-challenge-orchestrator
+    build:
+      context: .
+      dockerfile: Dockerfile.orchestrator
+    ports:
+      - "${ORCHESTRATOR_SERVICE_WEB_SERVER_PORT}:${ORCHESTRATOR_SERVICE_WEB_SERVER_PORT}"
+    depends_on:
+      - collector
+    networks:
+      - otel-net
+
+  collector:
+    image: otel/opentelemetry-collector:latest
+    restart: always
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./.docker/otel/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"  # OTLP gRPC receiver
+      - "8888:8888"  # Prometheus metrics
+      - "8889:8889"  # Prometheus exporter
+      - "13133:13133" # Health check
+    environment:
+      - OTEL_COLLECTOR_DEBUG=true
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:13133"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      zipkin:
+        condition: service_healthy
+    networks:
+      - otel-net
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    restart: always
+    ports:
+      - "9411:9411"
+    networks:
+      - otel-net
+
+networks:
+  otel-net:
+    driver: bridge

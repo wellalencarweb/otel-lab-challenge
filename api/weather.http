@@ -1,0 +1,8 @@
+# Test WeatherAPI directly
+GET https://api.weatherapi.com/v1/current.json?key={{$dotenv WEATHER_API_KEY}}&q=Santo André HTTP/1.1
+Content-Type: application/json
+
+###
+# Test with specific coordinates for Santo André
+GET https://api.weatherapi.com/v1/current.json?key={{$dotenv WEATHER_API_KEY}}&q=-23.6639,-46.5383 HTTP/1.1
+Content-Type: application/json

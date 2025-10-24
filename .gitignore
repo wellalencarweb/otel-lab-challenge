@@ -1,0 +1,11 @@
+build/
+bin/
+**/tmp/
+**/testdata/
+
+**/.env
+**/.env.docker
+coverage.tmp
+coverage.txt
+profile.out
+.null-ls*

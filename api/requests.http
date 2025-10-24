@@ -1,0 +1,28 @@
+# Variáveis de ambiente
+@inputHost = http://localhost:8000
+@orchestratorHost = http://localhost:8001
+
+### Input Service - Get Temperature by CEP
+POST {{inputHost}}
+Content-Type: application/json
+
+{
+    "cep": "29902555"
+}
+
+### Input Service - Invalid CEP format
+POST {{inputHost}}
+Content-Type: application/json
+
+{
+    "cep": "123"
+}
+
+### Orchestrator Service - Get Temperature by Zipcode
+GET {{orchestratorHost}}?zipcode=29902555
+
+### Orchestrator Service - Invalid Zipcode
+GET {{orchestratorHost}}?zipcode=123
+
+### Orchestrator Service - Non-existent Zipcode
+GET {{orchestratorHost}}?zipcode=00000000

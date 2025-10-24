@@ -1,0 +1,7 @@
+POST http://localhost:8000 HTTP/1.1
+HOST: localhost:8000
+Content-Type: application/json
+
+{
+  "cep": "09010000"
+}
